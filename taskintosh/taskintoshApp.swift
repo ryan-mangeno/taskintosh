@@ -26,10 +26,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
-
+        
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "text.append", accessibilityDescription: "Treatintosh")
+            button.image = NSImage(systemSymbolName: "text.append", accessibilityDescription: "Taskintosh")
             button.image?.isTemplate = true
             button.action = #selector(togglePopover)
             button.target = self
@@ -42,10 +42,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let contentView = ContentView().environmentObject(store)
         let hostingController = NSHostingController(rootView: contentView)
-
+        
         hostingController.view.wantsLayer = true
         let swiftUIColor = Color(hex: "#1E1E1E").opacity(0.85)
         hostingController.view.layer?.backgroundColor = NSColor(swiftUIColor).cgColor
+
 
         popover.contentViewController = hostingController
         
