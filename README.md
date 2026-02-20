@@ -2,6 +2,9 @@
 
 A minimal, aesthetic macOS menu bar todo app with a built-in reward shop and points system.
 
+<img width="421" height="574" alt="Screenshot 2026-02-20 at 2 56 11 PM" src="https://github.com/user-attachments/assets/1142dab4-c9f2-49a5-971b-6f03770e6216" />
+
+
 ## Features
 
 - **Tasks View** — Weekly calendar strip, daily task list, mark complete to earn points
