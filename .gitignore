@@ -1,0 +1,22 @@
+# OS X
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.playground
+
+# User-specific Xcode files (Crucial to ignore)
+xcuserdata/
+*.xcuserdatad
+*.xcuserstate
+
+# Project workspace settings
+project.xcworkspace/contents.xcworkspacedata
+project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# Swift Package Manager
+.swiftpm/xcode/package.resolved
+.build/
