@@ -158,3 +158,10 @@ struct TabButton: View {
     }
 }
 
+/*
+#Preview {
+    ContentView()
+        .environmentObject(AppStore())
+        .frame(width: 380, height: 520)
+}
+*/

@@ -239,7 +239,7 @@ extension Color {
     }
 }
 
-
+/*
 #Preview {
     ZStack {
         Color.gray.opacity(0.3).ignoresSafeArea()
@@ -250,3 +250,4 @@ extension Color {
             .background(Color.white)
     }
 }
+*/

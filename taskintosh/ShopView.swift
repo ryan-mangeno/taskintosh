@@ -301,14 +301,3 @@ extension TextField {
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "#2A2A2A"), lineWidth: 1))
     }
 }
-
-#Preview("Add Reward Sheet") {
-    ZStack {
-        // Dark background to simulate the app behind the sheet
-        Color(hex: "#0F0F0F").ignoresSafeArea()
-        
-        AddShopItemSheet()
-            .environmentObject(AppStore())
-    }
-    .frame(width: 380, height: 520)
-}

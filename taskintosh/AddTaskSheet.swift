@@ -219,15 +219,3 @@ struct AddTaskSheet: View {
         .frame(width: 360)
     }
 }
-
-
-#Preview {
-    ZStack {
-        Color.gray.opacity(0.3).ignoresSafeArea()
-        
-        AddTaskSheet(defaultDate: Date())
-            .environmentObject(AppStore())
-            .frame(width: 380, height: 450)
-            .background(Color.white)
-    }
-}
