@@ -2,8 +2,7 @@
 
 A minimal, aesthetic macOS menu bar todo app with a built-in reward shop and points system.
 
-<img width="421" height="574" alt="Screenshot 2026-02-20 at 2 56 11 PM" src="https://github.com/user-attachments/assets/1142dab4-c9f2-49a5-971b-6f03770e6216" />
-
+<img width="589" height="622" alt="Screenshot 2026-02-21 at 1 45 59 PM" src="https://github.com/user-attachments/assets/264592b6-7469-4dfa-89ac-726482683064" />
 
 ## Features
 
@@ -63,21 +62,6 @@ In `taskintosh.entitlements`:
 ### 5. Build & Run
 
 `Cmd+R` — the icon will appear in your menu bar. Click it!
-
----
-
-## Design System
-
-| Token | Value |
-|-------|-------|
-| Background | `#0F0F0F` |
-| Surface | `#151515` / `#1A1A1A` |
-| Accent (Amber) | `#F5A623` |
-| Success (Mint) | `#00D4AA` |
-| Danger | `#E85D75` |
-| Font | SF Pro Rounded |
-
----
 
 ## How Points Work
 
