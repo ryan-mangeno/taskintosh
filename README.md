@@ -63,21 +63,6 @@ In `taskintosh.entitlements`:
 
 `Cmd+R` — the icon will appear in your menu bar. Click it!
 
----
-
-## Design System
-
-| Token | Value |
-|-------|-------|
-| Background | `#0F0F0F` |
-| Surface | `#151515` / `#1A1A1A` |
-| Accent (Amber) | `#F5A623` |
-| Success (Mint) | `#00D4AA` |
-| Danger | `#E85D75` |
-| Font | SF Pro Rounded |
-
----
-
 ## How Points Work
 
 1. **Create tasks** — assign any point value (10, 25, 50, 100, 200, or custom)
