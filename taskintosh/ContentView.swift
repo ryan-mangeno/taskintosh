@@ -74,6 +74,7 @@ struct ContentView: View {
                     VisualEffectBackground(material: .hudWindow, blendingMode: .behindWindow)
                         .ignoresSafeArea()
         )
+        .foregroundColor(.white)
     }
 }
 
@@ -89,9 +90,6 @@ struct HeaderView: View {
                     Text("Taskintosh")
                         .font(.system(size: 16, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
-                    Text("Level up your day")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
@@ -100,7 +98,7 @@ struct HeaderView: View {
                 HStack(spacing: 5) {
                     Image(systemName: "star.fill")
                         .font(.system(size: 11))
-                        .foregroundColor(.orange)
+                        .foregroundColor(.blue)
                     Text("\(store.totalPoints)")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
@@ -147,15 +145,16 @@ struct TabButton: View {
                 Text(tab.label)
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
             }
-            .foregroundColor(isSelected ? .black : Color(hex: "#555555"))
+            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 7)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color(hex: "#F5A623") : Color.clear)
+                    .fill(isSelected ? Color(hex: "#0088cc") : .clear)
             )
         }
         .buttonStyle(.plain)
         .animation(.spring(response: 0.25), value: isSelected)
     }
 }
+

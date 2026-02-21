@@ -79,12 +79,12 @@ struct AddTaskSheet: View {
                                 } label: {
                                     Text("\(preset)")
                                         .font(.system(size: 13, weight: .bold, design: .rounded))
-                                        .foregroundColor(points == preset ? .black : Color(hex: "#888888"))
+                                        .foregroundColor(points == preset ? .white : Color(hex: "#888888"))
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 8)
                                         .background(
                                             RoundedRectangle(cornerRadius: 8)
-                                                .fill(points == preset ? Color(hex: "#F5A623") : Color(hex: "#1A1A1A"))
+                                                .fill(points == preset ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A"))
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -99,7 +99,7 @@ struct AddTaskSheet: View {
                             TextField("0", value: $points, format: .number)
                                 .textFieldStyle(.plain)
                                 .font(.system(size: 13, weight: .bold, design: .rounded))
-                                .foregroundColor(Color(hex: "#F5A623"))
+                                .foregroundColor(.white)
                                 .frame(width: 60)
                                 .padding(8)
                                 .background(Color(hex: "#1A1A1A"))
@@ -157,12 +157,12 @@ struct AddTaskSheet: View {
                                 } label: {
                                     Text(rec.rawValue)
                                         .font(.system(size: 12, weight: .semibold))
-                                        .foregroundColor(recurrence == rec ? .black : Color(hex: "#666666"))
+                                        .foregroundColor(recurrence == rec ? .white : Color(hex: "#666666"))
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 8)
                                         .background(
                                             RoundedRectangle(cornerRadius: 8)
-                                                .fill(recurrence == rec ? Color(hex: "#F5A623") : Color(hex: "#1A1A1A"))
+                                                .fill(recurrence == rec ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A"))
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -177,7 +177,7 @@ struct AddTaskSheet: View {
                             .foregroundColor(Color(hex: "#666666"))
 
                         DatePicker("", selection: $dueDate, displayedComponents: .date)
-                            .datePickerStyle(.compact)
+                            .datePickerStyle(.graphical)
                             .labelsHidden()
                             .colorScheme(.dark)
                     }
@@ -204,10 +204,10 @@ struct AddTaskSheet: View {
                     Text("Add Task")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
-                .foregroundColor(title.isEmpty ? Color(hex: "#444444") : .black)
+                .foregroundColor(title.isEmpty ? Color(hex: "#444444") : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 13)
-                .background(title.isEmpty ? Color(hex: "#1E1E1E") : Color(hex: "#F5A623"))
+                .background(title.isEmpty ? Color(hex: "#1E1E1E") : Color(hex: "#0088cc"))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
@@ -215,7 +215,19 @@ struct AddTaskSheet: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .background(Color(hex: "#0F0F0F"))
+        .background(.clear)
         .frame(width: 360)
+    }
+}
+
+
+#Preview {
+    ZStack {
+        Color.gray.opacity(0.3).ignoresSafeArea()
+        
+        AddTaskSheet(defaultDate: Date())
+            .environmentObject(AppStore())
+            .frame(width: 380, height: 450)
+            .background(Color.white)
     }
 }

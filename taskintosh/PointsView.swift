@@ -28,7 +28,7 @@ struct PointsView: View {
             VStack(spacing: 16) {
                 // Stats row
                 HStack(spacing: 10) {
-                    StatCard(label: "Balance", value: "\(store.totalPoints)", icon: "star.fill", color: Color(hex: "#F5A623"))
+                    StatCard(label: "Balance", value: "\(store.totalPoints)", icon: "star.fill", color: .blue)
                     StatCard(label: "Earned", value: "\(totalEarned)", icon: "arrow.up.circle.fill", color: Color(hex: "#00D4AA"))
                     StatCard(label: "Spent", value: "\(totalSpent)", icon: "arrow.down.circle.fill", color: Color(hex: "#E85D75"))
                 }
@@ -170,3 +170,4 @@ struct TransactionRow: View {
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "#1E1E1E"), lineWidth: 1))
     }
 }
+

@@ -50,10 +50,10 @@ struct TasksView: View {
                     Text("Add Task")
                         .font(.system(size: 13, weight: .semibold, design: .rounded))
                 }
-                .foregroundColor(.black)
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 11)
-                .background(Color(hex: "#F5A623"))
+                .background(Color(hex: "#0088cc"))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
@@ -150,22 +150,22 @@ struct DayPill: View {
             VStack(spacing: 4) {
                 Text(letter)
                     .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(isSelected ? .black : Color(hex: "#555555"))
+                    .foregroundColor(isSelected ? .white : Color(hex: "#555555"))
 
                 Text("\(Calendar.current.component(.day, from: date))")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundColor(isSelected ? .black : isToday ? Color(hex: "#F5A623") : .white)
+                    .foregroundColor(isSelected ? .white : isToday ? Color(hex: "#A6D5C8") : Color(hex: "#555555"))
 
                 // Dot indicator
                 Circle()
-                    .fill(taskCount > 0 ? (completedCount == taskCount ? Color(hex: "#00D4AA") : Color(hex: "#F5A623")) : Color.clear)
+                    .fill(taskCount > 0 ? (completedCount == taskCount ? Color(hex: "#00D4AA") : Color(hex: "#F0F8FF")) : Color.clear)
                     .frame(width: 4, height: 4)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(isSelected ? Color(hex: "#F5A623") : Color(hex: "#1A1A1A"))
+                    .fill(isSelected ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A"))
             )
         }
         .buttonStyle(.plain)
@@ -251,10 +251,10 @@ struct TaskRowView: View {
                 HStack(spacing: 3) {
                     Image(systemName: "star.fill")
                         .font(.system(size: 9))
-                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : .blue)
                     Text("\(task.points)")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : .white)
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
@@ -296,4 +296,11 @@ struct EmptyDayView: View {
                 .foregroundColor(Color(hex: "#2E2E2E"))
         }
     }
+}
+
+
+#Preview {
+    ContentView()
+        .environmentObject(AppStore())
+        .frame(width: 380, height: 520)
 }

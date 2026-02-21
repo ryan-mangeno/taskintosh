@@ -22,7 +22,7 @@ struct ShopView: View {
                         .foregroundColor(Color(hex: "#555555"))
                     HStack(spacing: 5) {
                         Image(systemName: "star.fill")
-                            .foregroundColor(Color(hex: "#F5A623"))
+                            .foregroundColor(.blue)
                         Text("\(store.totalPoints) points")
                             .font(.system(size: 20, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
@@ -34,7 +34,7 @@ struct ShopView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 13, weight: .bold))
-                        .foregroundColor(Color(hex: "#F5A623"))
+                        .foregroundColor(.white)
                         .frame(width: 32, height: 32)
                         .background(Color(hex: "#1E1E1E"))
                         .clipShape(Circle())
@@ -75,9 +75,9 @@ struct ShopItemCard: View {
             HStack {
                 Image(systemName: item.icon)
                     .font(.system(size: 20))
-                    .foregroundColor(item.isPurchased ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                    .foregroundColor(item.isPurchased ? Color(hex: "#444444") : Color(hex: "#0088cc"))
                     .frame(width: 40, height: 40)
-                    .background(Color(hex: item.isPurchased ? "#1A1A1A" : "#251E10"))
+                    .background(Color(hex: item.isPurchased ? "#1A1A1A" : "#444444"))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
 
                 Spacer()
@@ -142,7 +142,7 @@ struct ShopItemCard: View {
         .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color(hex: isHovering ? "#1C1C1C" : "#151515"))
+                .fill(Color(hex: isHovering ? "#242424" : "#1C1C1C"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
                         .stroke(item.isPurchased ? Color(hex: "#222222") : Color(hex: "#00D4AA").opacity(isHovering && canAfford ? 0.4 : 0), lineWidth: 1)
@@ -218,10 +218,10 @@ struct AddShopItemSheet: View {
                                 } label: {
                                     Text("\(preset)")
                                         .font(.system(size: 12, weight: .bold, design: .rounded))
-                                        .foregroundColor(cost == preset ? .black : Color(hex: "#666666"))
+                                        .foregroundColor(cost == preset ? .white : Color(hex: "#666666"))
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 7)
-                                        .background(RoundedRectangle(cornerRadius: 8).fill(cost == preset ? Color(hex: "#F5A623") : Color(hex: "#1A1A1A")))
+                                        .background(RoundedRectangle(cornerRadius: 8).fill(cost == preset ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A")))
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -238,12 +238,12 @@ struct AddShopItemSheet: View {
                                 } label: {
                                     Image(systemName: i)
                                         .font(.system(size: 16))
-                                        .foregroundColor(icon == i ? Color(hex: "#F5A623") : Color(hex: "#555555"))
+                                        .foregroundColor(icon == i ? .white : Color(hex: "#555555"))
                                         .frame(width: 44, height: 44)
                                         .background(
                                             RoundedRectangle(cornerRadius: 8)
                                                 .fill(icon == i ? Color(hex: "#251E10") : Color(hex: "#1A1A1A"))
-                                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(icon == i ? Color(hex: "#F5A623") : Color.clear, lineWidth: 1))
+                                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(icon == i ? Color(hex: "#0088cc") : Color.clear, lineWidth: 1))
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -262,10 +262,10 @@ struct AddShopItemSheet: View {
             } label: {
                 Text("Add Reward")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundColor(name.isEmpty ? Color(hex: "#444444") : .black)
+                    .foregroundColor(name.isEmpty ? Color(hex: "#444444") : .white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 13)
-                    .background(name.isEmpty ? Color(hex: "#1E1E1E") : Color(hex: "#F5A623"))
+                    .background(name.isEmpty ? Color(hex: "#1E1E1E") : Color(hex: "#0088cc"))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
@@ -273,7 +273,7 @@ struct AddShopItemSheet: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .background(Color(hex: "#0F0F0F"))
+        .background(.clear)
         .frame(width: 360)
     }
 }
@@ -300,4 +300,15 @@ extension TextField {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "#2A2A2A"), lineWidth: 1))
     }
+}
+
+#Preview("Add Reward Sheet") {
+    ZStack {
+        // Dark background to simulate the app behind the sheet
+        Color(hex: "#0F0F0F").ignoresSafeArea()
+        
+        AddShopItemSheet()
+            .environmentObject(AppStore())
+    }
+    .frame(width: 380, height: 520)
 }
