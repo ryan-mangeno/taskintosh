@@ -120,35 +120,35 @@ class AppStore: ObservableObject {
     }
 
     func completeTask(_ task: Task) {
-        guard let idx = tasks.firstIndex(where: { $0.id == task.id }),
-              !tasks[idx].isCompleted else { return }
-
-        tasks[idx].isCompleted = true
-        tasks[idx].completedAt = Date()
-        totalPoints += task.points
-        transactions.append(PointsTransaction(
-            amount: task.points,
-            reason: "Completed: \(task.title)",
-            date: Date(),
-            type: .earned
-        ))
-        save()
+        guard let idx = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        if !tasks[idx].isCompleted {
+            tasks[idx].isCompleted = true
+            tasks[idx].completedAt = Date()
+            totalPoints += task.points
+            transactions.append(PointsTransaction(
+                amount: task.points,
+                reason: "Completed: \(task.title)",
+                date: Date(),
+                type: .earned
+            ))
+            save()
+        }
     }
 
     func uncompleteTask(_ task: Task) {
-        guard let idx = tasks.firstIndex(where: { $0.id == task.id }),
-              tasks[idx].isCompleted else { return }
-
-        totalPoints -= task.points
-        tasks[idx].isCompleted = false
-        tasks[idx].completedAt = nil
-        transactions.append(PointsTransaction(
-            amount: -task.points,
-            reason: "Uncompleted: \(task.title)",
-            date: Date(),
-            type: .spent
-        ))
-        save()
+        guard let idx = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        if tasks[idx].isCompleted {
+            totalPoints -= task.points
+            tasks[idx].isCompleted = false
+            tasks[idx].completedAt = nil
+            transactions.append(PointsTransaction(
+                amount: -task.points,
+                reason: "Uncompleted: \(task.title)",
+                date: Date(),
+                type: .spent
+            ))
+            save()
+        }
     }
 
     func deleteTask(_ task: Task) {

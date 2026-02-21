@@ -8,6 +8,22 @@
 
 import SwiftUI
 
+struct VisualEffectBackground: NSViewRepresentable {
+    let material: NSVisualEffectView.Material
+    let blendingMode: NSVisualEffectView.BlendingMode
+
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+
+    // SwiftUI calls this when state changes, nothing to update here
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
+}
+
 enum AppTab: CaseIterable {
     case tasks, shop, points
 
@@ -54,6 +70,10 @@ struct ContentView: View {
             .animation(.spring(response: 0.35, dampingFraction: 0.85), value: selectedTab)
         }
         .frame(width: 380, height: 520)
+        .background(
+                    VisualEffectBackground(material: .hudWindow, blendingMode: .behindWindow)
+                        .ignoresSafeArea()
+        )
     }
 }
 

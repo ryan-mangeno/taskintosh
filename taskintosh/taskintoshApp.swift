@@ -11,18 +11,17 @@ import AppKit
 
 @main
 struct TaskintoshApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self)
-    var appDelegate
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        Settings { EmptyView() }
+        return Settings { EmptyView() }
     }
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var popover: NSPopover?
-    var store = AppStore()
+    let store = AppStore()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -44,9 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let hostingController = NSHostingController(rootView: contentView)
         
         hostingController.view.wantsLayer = true
-        let swiftUIColor = Color(hex: "#1E1E1E").opacity(0.85)
-        hostingController.view.layer?.backgroundColor = NSColor(swiftUIColor).cgColor
-
+        hostingController.view.layer?.backgroundColor = .clear
+        
 
         popover.contentViewController = hostingController
         

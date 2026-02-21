@@ -8,29 +8,32 @@
 
 import SwiftUI
 
+
 struct TasksView: View {
     @EnvironmentObject var store: AppStore
     @State private var showAddTask = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: Date())
 
+    var tasksForSelectedDate: [Task] {
+        store.tasks.filter { task in
+            Calendar.current.isDate(task.dueDate, inSameDayAs: selectedDate)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            // Week navigation
             WeekStripView(selectedDate: $selectedDate)
                 .padding(.top, 12)
                 .padding(.horizontal, 18)
 
-            // Task list
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    let dayTasks = store.tasks(for: selectedDate)
-
-                    if dayTasks.isEmpty {
+                    if tasksForSelectedDate.isEmpty {
                         EmptyDayView()
                             .padding(.top, 40)
                     } else {
-                        ForEach(dayTasks) { task in
-                            TaskRowView(task: task)
+                        ForEach(tasksForSelectedDate) { task in
+                            TaskRowView(taskID: task.id)
                         }
                         .padding(.horizontal, 18)
                     }
@@ -38,7 +41,6 @@ struct TasksView: View {
                 .padding(.vertical, 12)
             }
 
-            // Add task button
             Button {
                 showAddTask = true
             } label: {
@@ -173,108 +175,111 @@ struct DayPill: View {
 // MARK: - Task Row
 
 struct TaskRowView: View {
+    let taskID: UUID
     @EnvironmentObject var store: AppStore
-    let task: Task
     @State private var isHovering = false
-    @State private var showCompleteAnimation = false
+
+    var task: Task? {
+        store.tasks.first { $0.id == taskID }
+    }
 
     var body: some View {
-        HStack(spacing: 12) {
-            // Category accent + checkbox
-            VStack(spacing: 0) {
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(task.category.color)
-                    .frame(width: 3)
-            }
-
-            // Checkbox
-            Button {
-                if task.isCompleted {
-                    store.uncompleteTask(task)
-                } else {
-                    withAnimation(.spring(response: 0.3)) {
-                        showCompleteAnimation = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        store.completeTask(task)
-                        showCompleteAnimation = false
-                    }
+        if let task {
+            HStack(spacing: 12) {
+                VStack(spacing: 0) {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(task.category.color)
+                        .frame(width: 3)
                 }
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(task.isCompleted ? task.category.color : Color(hex: "#333333"), lineWidth: 1.5)
-                        .frame(width: 22, height: 22)
 
-                    if task.isCompleted {
+                Button {
+                    withAnimation(.spring(response: 0.25)) {
+                        if task.isCompleted {
+                            store.uncompleteTask(task)
+                        } else {
+                            store.completeTask(task)
+                        }
+                    }
+                } label: {
+                    ZStack {
                         RoundedRectangle(cornerRadius: 6)
-                            .fill(task.category.color)
+                            .stroke(
+                                task.isCompleted ? task.category.color : Color(hex: "#333333"),
+                                lineWidth: 1.5
+                            )
                             .frame(width: 22, height: 22)
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.white)
+
+                        if task.isCompleted {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(task.category.color)
+                                    .frame(width: 22, height: 22)
+
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 11, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                            .scaleEffect(0.85)
+                            .transition(.scale)
+                        }
                     }
+                    .animation(.easeInOut(duration: 0.15), value: task.isCompleted)
                 }
-                .scaleEffect(showCompleteAnimation ? 0.85 : 1.0)
-            }
-            .buttonStyle(.plain)
+                .buttonStyle(.borderless)
 
-            // Task info
-            VStack(alignment: .leading, spacing: 3) {
-                Text(task.title)
-                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundColor(task.isCompleted ? Color(hex: "#444444") : .white)
-                    .strikethrough(task.isCompleted, color: Color(hex: "#444444"))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(task.title)
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : .white)
+                        .strikethrough(task.isCompleted, color: Color(hex: "#444444"))
 
-                HStack(spacing: 8) {
-                    Label(task.category.rawValue, systemImage: task.category.icon)
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(task.category.color.opacity(0.8))
-
-                    if task.recurrence != .none {
-                        Label(task.recurrence.rawValue, systemImage: "arrow.clockwise")
+                    HStack(spacing: 8) {
+                        Label(task.category.rawValue, systemImage: task.category.icon)
                             .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color(hex: "#555555"))
+                            .foregroundColor(task.category.color.opacity(0.8))
+
+                        if task.recurrence != .none {
+                            Label(task.recurrence.rawValue, systemImage: "arrow.clockwise")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundColor(Color(hex: "#555555"))
+                        }
                     }
                 }
-            }
 
-            Spacer()
+                Spacer()
 
-            // Points badge
-            HStack(spacing: 3) {
-                Image(systemName: "star.fill")
-                    .font(.system(size: 9))
-                    .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
-                Text("\(task.points)")
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                HStack(spacing: 3) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 9))
+                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                    Text("\(task.points)")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .foregroundColor(task.isCompleted ? Color(hex: "#444444") : Color(hex: "#F5A623"))
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color(hex: "#1E1E1E"))
+                .clipShape(Capsule())
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Color(hex: "#1E1E1E"))
-            .clipShape(Capsule())
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(hex: isHovering ? "#1E1E1E" : "#161616"))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color(hex: "#222222"), lineWidth: 1)
-                )
-        )
-        .onHover { isHovering = $0 }
-        .contextMenu {
-            Button("Delete Task", role: .destructive) {
-                store.deleteTask(task)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(hex: isHovering ? "#1E1E1E" : "#161616"))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(hex: "#222222"), lineWidth: 1)
+                    )
+            )
+            .onHover { isHovering = $0 }
+            .contextMenu {
+                Button("Delete Task", role: .destructive) {
+                    store.deleteTask(task)
+                }
             }
         }
-        .animation(.spring(response: 0.25), value: task.isCompleted)
     }
 }
-
 // MARK: - Empty State
 
 struct EmptyDayView: View {
