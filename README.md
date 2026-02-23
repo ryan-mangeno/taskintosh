@@ -2,7 +2,8 @@
 
 A minimal, aesthetic macOS menu bar todo app with a built-in reward shop and points system.
 
-<img width="589" height="622" alt="Screenshot 2026-02-21 at 1 45 59 PM" src="https://github.com/user-attachments/assets/264592b6-7469-4dfa-89ac-726482683064" />
+<img width="452" height="606" alt="Screenshot 2026-02-22 at 10 40 43 PM" src="https://github.com/user-attachments/assets/a940b1fd-1eef-4246-9c53-520346f5a6b9" />
+
 
 ## Features
 
