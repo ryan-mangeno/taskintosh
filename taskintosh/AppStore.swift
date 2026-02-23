@@ -93,6 +93,13 @@ class AppStore: ObservableObject {
         load()
         if shopItems.isEmpty { seedShop() }
     }
+    
+    func resetAllData() {
+        tasks = []
+        transactions = []
+        totalPoints = 0
+        save() 
+    }
 
     // MARK: - Week Navigation
 

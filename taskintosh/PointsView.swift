@@ -125,7 +125,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
-        .background(Color(hex: "#151515"))
+        .background(Color(hex: "#1E1E1E"))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(color.opacity(0.15), lineWidth: 1))
     }
@@ -165,9 +165,16 @@ struct TransactionRow: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(Color(hex: "#131313"))
+        .background(Color(hex: "#1E1E1E"))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "#1E1E1E"), lineWidth: 1))
     }
 }
 
+/*
+#Preview {
+    PointsView()
+        .environmentObject(AppStore())
+        .frame(width: 380, height: 520)
+}
+*/

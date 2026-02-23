@@ -47,11 +47,11 @@ enum AppTab: CaseIterable {
 struct ContentView: View {
     @EnvironmentObject var store: AppStore
     @State private var selectedTab: AppTab = .tasks
+    @State private var showSettings: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            HeaderView(selectedTab: $selectedTab)
+            HeaderView(selectedTab: $selectedTab, showSettings: $showSettings)
 
             // Content
             ZStack {
@@ -75,16 +75,34 @@ struct ContentView: View {
                         .ignoresSafeArea()
         )
         .foregroundColor(.white)
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+                .environmentObject(store)
+        }
     }
 }
 
 struct HeaderView: View {
     @EnvironmentObject var store: AppStore
     @Binding var selectedTab: AppTab
+    @Binding var showSettings: Bool
 
     var body: some View {
         VStack(spacing: 0) {
-            // Points pill + title row
+            ZStack(alignment: .leading) {
+                Button {
+                    showSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.6))
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 15)
+                .padding(.horizontal, -173)
+            }
+
+            
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Taskintosh")
