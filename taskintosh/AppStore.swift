@@ -13,6 +13,7 @@ import Combine
 
 struct Task: Identifiable, Codable {
     var id = UUID()
+    let templateID: UUID? // nil is used for recurring tasks
     var title: String
     var points: Int
     var isCompleted: Bool = false
@@ -53,7 +54,16 @@ struct Task: Identifiable, Codable {
         case none = "Once"
         case daily = "Daily"
         case weekly = "Weekly"
+        
+        var intervalDays: Int {
+            switch self {
+                case .none:   return 0
+                case .daily:  return 1
+                case .weekly: return 7
+            }
+        }
     }
+
 }
 
 struct ShopItem: Identifiable, Codable {
@@ -82,6 +92,7 @@ struct PointsTransaction: Identifiable, Codable {
 
 class AppStore: ObservableObject {
     @Published var tasks: [Task] = []
+    @Published var recurringTasks: [Task] = []
     @Published var shopItems: [ShopItem] = []
     @Published var transactions: [PointsTransaction] = []
     @Published var totalPoints: Int = 0
@@ -96,12 +107,13 @@ class AppStore: ObservableObject {
     
     func resetAllData() {
         tasks = []
+        recurringTasks = []
         transactions = []
         totalPoints = 0
         save() 
     }
 
-    // MARK: - Week Navigation
+    // MARK: Week Navigation
 
     var currentWeekDates: [Date] {
         let calendar = Calendar.current
@@ -123,6 +135,11 @@ class AppStore: ObservableObject {
 
     func addTask(_ task: Task) {
         tasks.append(task)
+        save()
+    }
+    
+    func addRecurringTask(_ task: Task) {
+        recurringTasks.append(task)
         save()
     }
 
@@ -160,8 +177,14 @@ class AppStore: ObservableObject {
 
     func deleteTask(_ task: Task) {
         tasks.removeAll { $0.id == task.id }
+        
+        if let templateID = task.templateID {
+            recurringTasks.removeAll { $0.id == templateID }
+        }
+        
         save()
     }
+    
 
     // MARK: - Shop Actions
 
@@ -195,13 +218,14 @@ class AppStore: ObservableObject {
 
     private struct SaveData: Codable {
         var tasks: [Task]
+        var recurringTasks: [Task]
         var shopItems: [ShopItem]
         var transactions: [PointsTransaction]
         var totalPoints: Int
     }
 
     func save() {
-        let data = SaveData(tasks: tasks, shopItems: shopItems, transactions: transactions, totalPoints: totalPoints)
+        let data = SaveData(tasks: tasks, recurringTasks: recurringTasks, shopItems: shopItems, transactions: transactions, totalPoints: totalPoints)
         if let encoded = try? JSONEncoder().encode(data) {
             UserDefaults.standard.set(encoded, forKey: saveKey)
         }
@@ -211,9 +235,45 @@ class AppStore: ObservableObject {
         guard let data = UserDefaults.standard.data(forKey: saveKey),
               let decoded = try? JSONDecoder().decode(SaveData.self, from: data) else { return }
         tasks = decoded.tasks
+        recurringTasks = decoded.recurringTasks
         shopItems = decoded.shopItems
         transactions = decoded.transactions
         totalPoints = decoded.totalPoints
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        for template in recurringTasks {
+
+            // compute day difference
+            let dueDate = calendar.startOfDay(for: template.dueDate)
+            let dayDifference = calendar.dateComponents([.day], from: dueDate, to: today).day ?? 0
+            let interval = template.recurrence.intervalDays
+
+            guard interval > 0, dayDifference >= 0, dayDifference % interval == 0 else {
+                continue
+            }
+
+            // Check if todays task already exists
+            let exists = tasks.contains(where: { t in
+                t.templateID == template.id &&
+                calendar.isDate(t.dueDate, inSameDayAs: today)
+            })
+            if exists { continue }
+
+            // generate a new task instance for today
+            let newTask = Task(
+                id: UUID(),                   // new id for swiftui requirement
+                templateID: template.id,      // track the template
+                title: template.title,
+                points: template.points,
+                dueDate: today,             
+                category: template.category,
+                recurrence: template.recurrence
+            )
+
+            tasks.append(newTask)
+        }
     }
 
     private func seedShop() {

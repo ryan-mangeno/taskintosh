@@ -273,8 +273,11 @@ struct TaskRowView: View {
             )
             .onHover { isHovering = $0 }
             .contextMenu {
-                Button("Delete Task", role: .destructive) {
+                Button(role: .destructive) {
                     store.deleteTask(task)
+                } label: {
+                    Text("Delete")
+                    Image(systemName: "trash")
                 }
             }
         }

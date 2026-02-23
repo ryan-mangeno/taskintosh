@@ -189,14 +189,33 @@ struct AddTaskSheet: View {
             // Save button
             Button {
                 guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+                
+                let recurrentID = UUID()
+                
                 let task = Task(
+                    id: UUID(),
+                    templateID: recurrentID,
                     title: title,
                     points: points,
                     dueDate: dueDate,
                     category: category,
-                    recurrence: recurrence
+                    recurrence: recurrence,
                 )
+
                 store.addTask(task)
+                if task.recurrence != .none {
+                    // store a template if recurring
+                    let template = Task(
+                        id: recurrentID,
+                        templateID: nil,
+                        title: title,
+                        points: points,
+                        dueDate: dueDate,
+                        category: category,
+                        recurrence: recurrence
+                    )
+                    store.addRecurringTask(template)
+                }
                 dismiss()
             } label: {
                 HStack(spacing: 6) {

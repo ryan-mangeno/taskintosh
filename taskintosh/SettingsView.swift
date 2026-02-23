@@ -19,7 +19,6 @@ func updateLaunchAtLogin(enabled: Bool) {
             try service.unregister()
         }
     } catch {
-        // Log the error if registration fails
         print("Failed to update launch at login: \(error.localizedDescription)")
     }
 }
@@ -51,7 +50,7 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("GENERAL").sectionLabel()) {
                     Toggle("Launch at Startup", isOn: $launchAtLogin)
-                        .toggleStyle(SwitchToggleStyle(tint: Color(hex: "#F5A623")))
+                        .toggleStyle(SwitchToggleStyle(tint: Color(hex: "#0088cc")))
                         .onChange(of: launchAtLogin) { oldValue, newValue in
                             updateLaunchAtLogin(enabled: newValue)
                         }
@@ -85,6 +84,7 @@ struct SettingsView: View {
         .frame(width: 250, height: 320)
     }
 }
+
 /*
 #Preview {
     SettingsView()
