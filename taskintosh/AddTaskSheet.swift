@@ -100,7 +100,8 @@ struct AddTaskSheet: View {
                                 .textFieldStyle(.plain)
                                 .font(.system(size: 13, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                                .frame(width: 60)
+                                .frame(width: 40)
+                                .multilineTextAlignment(.center)
                                 .padding(8)
                                 .background(Color(hex: "#1A1A1A"))
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -238,3 +239,16 @@ struct AddTaskSheet: View {
         .frame(width: 360)
     }
 }
+
+/*
+#Preview {
+    ZStack {
+        Color.gray.opacity(0.3).ignoresSafeArea()
+        
+        AddTaskSheet(defaultDate: Date())
+            .environmentObject(AppStore())
+            .frame(width: 380, height: 450)
+            .background(Color.white)
+    }
+}
+*/

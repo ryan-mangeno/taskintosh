@@ -196,41 +196,68 @@ struct AddShopItemSheet: View {
                 VStack(alignment: .leading, spacing: 16) {
                     // Name
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("REWARD NAME").sectionLabel()
+                        Label("Reward Name", systemImage: "gift.fill")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "#666666"))
                         TextField("e.g. Coffee Break", text: $name)
                             .styledField()
+                        
                     }
 
                     // Description
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("DESCRIPTION").sectionLabel()
+                        Label("Description", systemImage: "doc.plaintext")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "#666666"))
                         TextField("A short description...", text: $description)
                             .styledField()
                     }
 
                     // Cost
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("POINT COST").sectionLabel()
-                        HStack(spacing: 6) {
-                            ForEach(costPresets, id: \.self) { preset in
-                                Button {
-                                    cost = preset
-                                } label: {
-                                    Text("\(preset)")
-                                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                                        .foregroundColor(cost == preset ? .white : Color(hex: "#666666"))
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.vertical, 7)
-                                        .background(RoundedRectangle(cornerRadius: 8).fill(cost == preset ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A")))
+                        Label("Point Cost", systemImage: "star.fill")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "#666666"))
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 6) {
+                                ForEach(costPresets, id: \.self) { preset in
+                                    Button {
+                                        cost = preset
+                                    } label: {
+                                        Text("\(preset)")
+                                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                                            .foregroundColor(cost == preset ? .white : Color(hex: "#666666"))
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 7)
+                                            .background(RoundedRectangle(cornerRadius: 8).fill(cost == preset ? Color(hex: "#0088cc") : Color(hex: "#1A1A1A")))
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
+                            }
+                            HStack {
+                                Text("Custom:")
+                                    .foregroundColor(Color(hex: "#555555"))
+                                TextField("0", value: $cost, format: .number)
+                                    .textFieldStyle(.plain)
+                                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 40)
+                                    .padding(8)
+                                    .background(Color(hex: "#1A1A1A"))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                Text("pts")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(Color(hex: "#555555"))
                             }
                         }
                     }
 
                     // Icon
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("ICON").sectionLabel()
+                        Label("Icon", systemImage: "person.crop.square")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "#666666"))
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 8) {
                             ForEach(icons, id: \.self) { i in
                                 Button {
@@ -301,3 +328,17 @@ extension TextField {
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "#2A2A2A"), lineWidth: 1))
     }
 }
+
+
+/*
+#Preview {
+    ZStack {
+        Color.gray.opacity(0.3).ignoresSafeArea()
+        
+        AddShopItemSheet()
+            .environmentObject(AppStore())
+            .frame(width: 380, height: 450)
+            .background(Color.white)
+    }
+}
+*/
