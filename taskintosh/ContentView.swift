@@ -89,7 +89,7 @@ struct HeaderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .leading) {
+            HStack() {
                 Button {
                     showSettings = true
                 } label: {
@@ -99,7 +99,20 @@ struct HeaderView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.top, 15)
-                .padding(.horizontal, -173)
+                .padding(.horizontal, 15)
+                
+                Spacer()
+                
+                Button {
+                    //NSApplication.shared.terminate(nil)
+                } label: {
+                    Image(systemName: "power")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white.opacity(0.7))
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 15)
+                .padding(.horizontal, 25)
             }
 
             
