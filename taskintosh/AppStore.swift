@@ -275,6 +275,43 @@ class AppStore: ObservableObject {
             tasks.append(newTask)
         }
     }
+    
+    func reload() {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        for template in recurringTasks {
+
+            // compute day difference
+            let dueDate = calendar.startOfDay(for: template.dueDate)
+            let dayDifference = calendar.dateComponents([.day], from: dueDate, to: today).day ?? 0
+            let interval = template.recurrence.intervalDays
+
+            guard interval > 0, dayDifference >= 0, dayDifference % interval == 0 else {
+                continue
+            }
+
+            // Check if todays task already exists
+            let exists = tasks.contains(where: { t in
+                t.templateID == template.id &&
+                calendar.isDate(t.dueDate, inSameDayAs: today)
+            })
+            if exists { continue }
+
+            // generate a new task instance for today
+            let newTask = Task(
+                id: UUID(),                   // new id for swiftui requirement
+                templateID: template.id,      // track the template
+                title: template.title,
+                points: template.points,
+                dueDate: today,
+                category: template.category,
+                recurrence: template.recurrence
+            )
+
+            tasks.append(newTask)
+        }
+    }
 
     private func seedShop() {
         shopItems = [

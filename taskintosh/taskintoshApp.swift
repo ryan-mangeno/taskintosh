@@ -18,7 +18,7 @@ struct TaskintoshApp: App {
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     var statusItem: NSStatusItem?
     var popover: NSPopover?
     let store = AppStore()
@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.setActivationPolicy(.accessory)
         
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        
         if let button = statusItem?.button {
             button.image = NSImage(systemSymbolName: "text.append", accessibilityDescription: "Taskintosh")
             button.image?.isTemplate = true
@@ -38,6 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentSize = NSSize(width: 380, height: 520)
         popover.behavior = .transient
         popover.animates = true
+        popover.delegate = self
         
         let contentView = ContentView().environmentObject(store)
         let hostingController = NSHostingController(rootView: contentView)
@@ -53,11 +55,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func togglePopover() {
         guard let button = statusItem?.button else { return }
+        
         if let popover, popover.isShown {
             popover.performClose(nil)
         } else {
             popover?.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             NSApp.activate(ignoringOtherApps: true)
         }
+    }
+    
+    func popoverWillShow(_ notification: Notification) {
+        store.reload()
     }
 }
