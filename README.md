@@ -85,16 +85,3 @@ In `taskintosh.entitlements`:
 | Notification reminders | UserNotifications |
 | CSV export | Foundation |
 
----
-
-## Why not Rust?
-
-Rust *would* be great for a background sync daemon or a companion CLI tool, something like:
-
-```bash
-task add "Finish report" --points 100 --due today
-task complete "Finish report"
-task balance
-```
-
-I might write a Rust binary, expose it via Swift's `Process` API, and it would read/write the same JSON store. 
