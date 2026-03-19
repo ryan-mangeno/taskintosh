@@ -7,70 +7,54 @@ A minimal, aesthetic macOS menu bar todo app with a built-in reward shop and poi
 
 ## Features
 
-- **Tasks View** — Weekly calendar strip, daily task list, mark complete to earn points
-- **Shop View** — Define custom rewards and redeem them with your points  
-- **Points View** — Balance stats, completion ring, full transaction history
-- **Local persistence** — All data saved via UserDefaults (JSON)
+- **Tasks View** - Weekly calendar strip, daily task list, mark complete to earn points
+- **Shop View** - Define custom rewards and redeem them with your points  
+- **Points View** - Balance stats, completion ring, full transaction history
+- **Local persistence** - All data saved via UserDefaults 
 
 ---
 
-## Project Setup (Xcode)
+## Requirements
 
-### 1. Create the Project
+- macOS 13.0 (Ventura) or later
+- Xcode 15 or later
 
+---
+
+## Getting Started
+
+```bash
+git clone https://github.com/yourusername/taskintosh.git
+cd taskintosh
+open taskintosh.xcodeproj
 ```
-File > New > Project > macOS > App
-Product Name: taskintosh 
-Interface: SwiftUI
-Language: Swift
-```
 
-### 2. Set App Target Settings
+Then in Xcode hit `Cmd+R`. The app won't appear in the Dock - look for the icon in your menu bar top right.
 
-In your target's **General** tab:
-- Deployment Target: **macOS 13.0+**
+---
 
-In **Info.plist**, add:
-```xml
-<key>LSUIElement</key>
-<true/>
-```
-This hides the app from the Dock and only shows it in the menu bar.
+## Project Files
 
-Copy all Swift files from this project into Xcode, maintaining the folder structure:
 ```
 taskintosh/
-├── taskintoshApp.swift
-├── Models/
-│   └── AppStore.swift
-└── Views/
+    ├── taskintoshApp.swift
     ├── ContentView.swift
     ├── TasksView.swift
     ├── AddTaskSheet.swift
     ├── ShopView.swift
+    ├── AppStoreView.swift
+    ├── PointsView.swift
     └── PointsView.swift
 ```
 
-### 4. Entitlements
-
-In `taskintosh.entitlements`:
-```xml
-<key>com.apple.security.app-sandbox</key>
-<false/>
-```
-(Or keep sandbox on — all features work either way.)
-
-### 5. Build & Run
-
-`Cmd+R` — the icon will appear in your menu bar. Click it!
 
 ## How Points Work
 
-1. **Create tasks** — assign any point value (10, 25, 50, 100, 200, or custom)
-2. **Complete tasks** — tap the checkbox, points are instantly added
-3. **Uncomplete** — if you made a mistake, tap again to subtract
-4. **Shop rewards** — define anything (coffee break, takeout, episode night, day off)
-5. **Redeem** — when you have enough points, hit Redeem and enjoy!
+1. **Create tasks** - assign any point value (10, 25, 50, 100, 200, or custom)
+2. **Complete tasks** - tap the checkbox, points are instantly added
+3. **Uncomplete** - if you made a mistake, tap again to subtract
+4. **Shop rewards** - define anything (coffee break, takeout, episode night, day off)
+5. **Redeem** - when you have enough points, hit Redeem and enjoy!
 
 ---
 
